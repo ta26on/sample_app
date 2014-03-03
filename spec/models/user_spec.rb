@@ -1,13 +1,20 @@
 require 'spec_helper'
 
 describe User do
-  before { @user = User.new(name: "Example User", email: "user@example.com")}
+  before do
+  	@user = User.new(name: "Example User", email: "user@example.com", 
+  		password: "hogehoge", password_confirmation: "hogehoge")
+  end
+
   subject { @user }
 
   # カラムの存在チェック
   it { should respond_to(:name) }
   it { should respond_to(:email) }
   it { should respond_to(:password_digest) }
+  it { should respond_to(:password) }
+  it { should respond_to(:password_confirmation) }
+  it { should be_valid }
 
   describe "when name is no present" do
   	before { @user.name = " " }
@@ -54,4 +61,17 @@ describe User do
   	it { should_not be_valid }
   end
 
+  describe "when password is not present" do
+  	before do
+  		@user = User.new(name: "Example User", email: "user@example.com", 
+  			password: " ", password_confirmation: " ")
+
+  	end
+  	it { should_not be_valid }
+  end
+
+  describe "when password doesn't match confirmation" do
+  	before { @user.password_confirmation = "mismatch" }
+  	it {should_not be_valid }
+  end
 end
