@@ -10,7 +10,7 @@ describe "UserPages" do
 	end
 
 	describe "prifile page" do
-		# ユーザー変数を作成するためのコードに置き換える
+		let(:user){ FactoryGirl.create(:user) }
 		before { visit user_path(user) }
 
 		it { should have_content(user.name) }
